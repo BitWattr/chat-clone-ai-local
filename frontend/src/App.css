@@ -1,0 +1,50 @@
+/*
+ * App.css
+ * Global styles for the React application.
+ * Defines basic layout, typography, and animation for core components.
+ */
+
+.App {
+  text-align: center;
+}
+
+/* Basic styling for the App logo, typically hidden or replaced in production */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* Animation for the App logo, only if motion is preferred */
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* Styles for the main application header */
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* Styling for generic application links */
+.App-link {
+  color: #61dafb;
+}
+
+/* Keyframe animation for the App logo spin */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+

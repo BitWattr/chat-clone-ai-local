@@ -1,0 +1,649 @@
+/*
+ * index.css
+ * This file contains global CSS styles for the application,
+ * including typography, layout, and component-specific styles.
+ * It is designed for responsiveness across various screen sizes.
+ */
+
+/* Global body styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top */
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Main application container */
+.app-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    width: 100%;
+    max-width: 950px; /* Increased max-width for desktop view */
+    text-align: center;
+    overflow: hidden; /* Ensures rounded corners are respected */
+}
+
+/* Header Styles */
+.app-header {
+    background-color: #42a5f5; /* A pleasant blue */
+    color: white;
+    padding: 15px 20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: center;
+    width: 100%;
+    max-width: 760px; /* Limit width within the header */
+}
+
+.bitwattr-link {
+    color: #e3f2fd; /* Lighter blue for link */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px; /* Space between link and title */
+    transition: color 0.3s ease;
+}
+
+.bitwattr-link:hover {
+    color: #ffffff;
+}
+
+.app-title {
+    margin: 0;
+    font-size: 1.8em;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+}
+
+.whatsapp-icon {
+    font-size: 1.2em; /* Adjust size relative to text */
+}
+
+/* General Layout Adjustments */
+h1 {
+    color: #1a1a1a;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.upload-form-container, .persona-selection {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* File Upload Customization */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #90caf9; /* Lighter blue for file selection */
+    color: #333; /* Darker text for contrast */
+    border-radius: 5px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+    border: 1px solid #64b5f6; /* Border for subtle definition */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.custom-file-upload:hover {
+    background-color: #64b5f6;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Hide the default file input */
+}
+
+/* Common button styles */
+button {
+    background-color: #2196F3; /* Primary blue for general buttons */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+    display: inline-flex; /* Allow icon and text alignment */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between text and icon */
+}
+
+button:hover:enabled {
+    background-color: #1976d2; /* Darker blue on hover */
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+.chat-interface {
+    margin-top: 0;
+    padding-bottom: 20px;
+}
+
+.persona-button {
+    background-color: #4CAF50; /* Green for persona selection */
+    margin: 10px;
+}
+
+.persona-button:hover:enabled {
+    background-color: #388E3C;
+}
+
+.upload-again-button {
+    background-color: #6c757d; /* Grey for "upload again" */
+    margin-top: 20px;
+}
+
+.upload-again-button:hover:enabled {
+    background-color: #5a6268;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh; /* Increased height for chat area */
+    min-height: 500px;
+    max-height: 900px;
+    margin: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fdfdfd;
+}
+
+.chat-header {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.chat-header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+    flex-grow: 1;
+    text-align: center;
+    order: 2; /* Change order for mobile, so button comes first */
+    padding: 5px 0;
+}
+
+.back-button {
+    background-color: #ffc107; /* Amber for back button */
+    color: #333;
+    padding: 8px 15px;
+    font-size: 14px;
+    order: 1; /* Make back button first on mobile */
+    margin-right: 10px;
+}
+
+.back-button:hover:enabled {
+    background-color: #e0a800;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fefefe;
+}
+
+.message-bubble {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 15px;
+    line-height: 1.4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.message-bubble.sent {
+    align-self: flex-end;
+    background-color: #dcf8c6; /* WhatsApp light green for sent messages */
+    color: #1a1a1a;
+    border-bottom-right-radius: 2px;
+}
+
+.message-bubble.received {
+    align-self: flex-start;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    color: #1a1a1a;
+    border-bottom-left-radius: 2px;
+}
+
+.message-bubble strong {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.message-sender-icon {
+    font-size: 1.1em;
+    color: #666;
+}
+
+/* Typing Indicator Animation */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-style: italic;
+    color: #666;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #666;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-8px); }
+}
+
+.no-messages-hint {
+    color: #777;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.message-input-form {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #dee2e6;
+    background-color: #f5f5f5;
+    gap: 10px;
+}
+
+.message-input-form input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.message-input-form button {
+    padding: 10px 15px;
+    border-radius: 20px;
+    background-color: #2196F3;
+}
+
+.message-input-form button:hover:enabled {
+    background-color: #1976d2;
+}
+
+/* Loading Spinner for Upload */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #2196F3;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #555;
+    font-style: italic;
+}
+
+/* Data Policy Modal */
+.policy-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.policy-modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.policy-modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    text-align: left; /* Align text to the left for better readability */
+    animation: fadeInScale 0.3s ease-out;
+    max-height: 80vh; /* Adjust this value as needed, e.g., 80% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS devices */
+}
+
+.policy-modal-content h2,
+.policy-modal-content h3 {
+    text-align: center; /* Keep headings centered for visual appeal */
+    margin-bottom: 20px;
+    color: #2196F3;
+}
+
+.policy-modal-content p {
+    text-align: justify; /* Justify paragraphs for a cleaner look */
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.policy-modal-content ul {
+    text-align: left; /* Align list items to the left */
+    margin-bottom: 15px;
+    padding-left: 20px; /* Add some left padding for list bullets */
+}
+
+.policy-modal-content li {
+    margin-bottom: 8px;
+}
+
+/* Ensure images within modals are responsive */
+.policy-modal-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjustments for mobile view of modal content */
+@media (max-width: 600px) {
+    .policy-modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .policy-modal-content p,
+    .policy-modal-content ul {
+        text-align: left;
+    }
+}
+
+.agree-button {
+    background-color: #2196F3;
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+}
+
+.agree-button:hover {
+    background-color: #1976d2;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+
+    .app-container {
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+        max-width: 100%;
+    }
+
+    .app-header {
+        border-radius: 0;
+        padding: 10px 15px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .app-title {
+        font-size: 1.5em;
+        margin-top: 5px;
+    }
+
+    .bitwattr-link {
+        margin-bottom: 5px;
+    }
+
+    .upload-form-container, .persona-selection {
+        margin: 15px;
+        padding: 15px;
+    }
+
+    .chat-container {
+        margin: 0;
+        border-radius: 0;
+        min-height: 80vh;
+        max-height: unset;
+    }
+
+    .chat-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .chat-header h2 {
+        font-size: 1em;
+        text-align: center;
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .back-button {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .message-bubble {
+        max-width: 90%;
+        font-size: 14px;
+    }
+
+    .message-input-form {
+        flex-direction: row;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .message-input-form input {
+        margin-right: 0;
+    }
+
+    .message-input-form button {
+        width: auto;
+    }
+
+    .policy-modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+}
+
+/* Donate Page Specific Styles */
+.donate-page-container {
+    padding: 30px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.donate-page-container h2 {
+    color: #2196F3;
+    margin-bottom: 25px;
+}
+
+.donate-page-container p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.game-showcase {
+    margin-top: 30px;
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #e3f2fd;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.game-showcase h3 {
+    color: #1976d2;
+    margin-bottom: 20px;
+}
+
+.game-embed {
+    margin: 0 auto;
+    max-width: 550px;
+}
+
+.game-embed iframe {
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 165px;
+}
+
+.embed-caption {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 10px;
+}
+
+.other-games-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #cccccc;
+}
+
+.colorful-button {
+    /* Styles are inline in DonatePage.js for direct control, but can be moved here if needed for global styling */
+}
+
+.back-to-upload-button {
+    background-color: #6c757d;
+    margin-top: 20px;
+}
+
+.back-to-upload-button:hover:enabled {
+    background-color: #5a6268;
+}
+
+/* Responsive adjustments for DonatePage */
+@media (max-width: 600px) {
+    .donate-page-container {
+        padding: 15px;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .game-embed iframe {
+        width: 100%;
+    }
+
+    .colorful-button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
