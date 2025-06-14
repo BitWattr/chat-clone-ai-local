@@ -39,8 +39,6 @@ You can run the application locally with source code quickly with some commands:
 
 #### Running from Source 💻
 
-To run the application directly from the source code, follow these steps.
-
 1.  **Clone the Repository:**
 
     ```
@@ -49,11 +47,11 @@ To run the application directly from the source code, follow these steps.
 
     ```
 
-2.  **Set up Python Environment:**
+2.  **Set up Python Environment (optional)(recommended):**
 
     * Ensure you have Python 3.8+ installed.
 
-    * Create a virtual environment (optional)(recommended):
+    * Create a virtual environment:
 
         ```
         python -m venv venv
