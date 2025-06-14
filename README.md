@@ -80,7 +80,7 @@ You can run the application locally with source code quickly with some commands:
         
         ```
 
-    * Your default web browser should automatically open to `http://localhost:8000`. If now opened automatically paste the link in a browser
+    * Your default web browser should automatically open to `http://localhost:8000`. If not opened automatically paste the link in a browser
 
 ## ⚙️ Settings
 
