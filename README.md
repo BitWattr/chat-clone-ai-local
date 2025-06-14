@@ -35,37 +35,11 @@ To use this application, you'll need to have [Ollama](https://ollama.com/downloa
 
 ### 2. Local Setup Options
 
-You have two ways to run the application locally:
+You can run the application locally with source code quickly with some commands:
 
-#### Option A: Using the Executable (Recommended for Simplicity) 🚀
+#### Running from Source 💻
 
-We provide a pre-built executable, this is the easiest way to get started.
-
-1.  **Download the Executable:**
-
-    * Go to our [GitHub Releases page](https://github.com/BitWattr/chat-clone-ai-local) (or the designated download location).
-
-    * Download the latest `.exe` (for Windows) or equivalent executable for your OS.
-
-    * *Note: The executable might be in a `.zip` or `.tar.gz` archive. Extract it first.*
-
-2.  **Run the Executable:**
-
-    * Navigate to the directory where you downloaded and extracted the executable.
-
-    * Double-click the executable file (e.g., `ai-chat-mimicry.exe`).
-
-    * A console window will appear, and your default web browser should automatically open to `http://localhost:8000`.
-
-3.  **If the Executable Isn't Working:**
-
-    * Sometimes, antivirus software or system permissions can block executables.
-
-    * If you encounter issues, please try **Option B** (Running from Source).
-
-#### Option B: Running from Source (For Developers/Troubleshooting) 💻
-
-If the executable isn't working or you prefer to run the application directly from the source code, follow these steps.
+To run the application directly from the source code, follow these steps.
 
 1.  **Clone the Repository:**
 
@@ -73,14 +47,13 @@ If the executable isn't working or you prefer to run the application directly fr
     git clone https://github.com/BitWattr/chat-clone-ai-local
     cd chat-clone-ai-local
 
-
     ```
 
 2.  **Set up Python Environment:**
 
     * Ensure you have Python 3.8+ installed.
 
-    * Create a virtual environment (recommended):
+    * Create a virtual environment (optional)(recommended):
 
         ```
         python -m venv venv
@@ -88,7 +61,6 @@ If the executable isn't working or you prefer to run the application directly fr
         .\venv\Scripts\activate
         # On macOS/Linux:
         source venv/bin/activate
-
 
         ```
 
@@ -107,8 +79,7 @@ If the executable isn't working or you prefer to run the application directly fr
 
         ```
         python main.py
-
-
+        
         ```
 
     * Your default web browser should automatically open to `http://localhost:8000`. If now opened automatically paste the link in a browser
