@@ -4,9 +4,9 @@ Welcome to the AI Person Mimicry Chat project! This application allows you to ut
 
 ## ✨ Features
 
-* **🕵️ Persona Mimicry:** Upload your WhatsApp chat history and select a participant for the AI to mimic.
+* **🕵️ Persona Mimicry:** Select your WhatsApp chat history file and select a participant for the AI to mimic.
 
-* **🔒 Local Processing:** All chat parsing and AI interactions happen locally on your machine using Ollama, guaranteeing your data privacy.
+* **🔒 Local Processing:** All chat parsing happen locally on your machine and AI interactions using Ollama on you machine itself, But BitWattr doesn't guarentee privacy as it depends on your machine and ollama.
 
 * **🚀 Easy Setup:** Get started quickly with a pre-built executable or by running the Python source code directly.
 
@@ -16,7 +16,7 @@ Welcome to the AI Person Mimicry Chat project! This application allows you to ut
 
 ## 🚀 Getting Started
 
-To use this application, you'll need to have [Ollama](https://ollama.com/download) installed and at least one LLM model downloaded (e.g., `llama3` or `gemma2`).
+To use this application, you'll need to have [Ollama](https://ollama.com/download) installed and at least one LLM model downloaded (e.g., `llama3.2`).
 
 ### 1. Install Ollama & Download an LLM
 
@@ -27,10 +27,7 @@ To use this application, you'll need to have [Ollama](https://ollama.com/downloa
 3.  **Download an LLM Model:** Open your terminal or command prompt and download a model. For example:
 
     ```
-    ollama run llama3
-    # or
-    ollama run gemma2
-
+    ollama run llama3.2
 
     ```
 
@@ -42,7 +39,7 @@ You have two ways to run the application locally:
 
 #### Option A: Using the Executable (Recommended for Simplicity) 🚀
 
-If we provide a pre-built executable, this is the easiest way to get started.
+We provide a pre-built executable, this is the easiest way to get started.
 
 1.  **Download the Executable:**
 
@@ -98,34 +95,11 @@ If the executable isn't working or you prefer to run the application directly fr
 3.  **Install Backend Dependencies:**
 
     ```
-    pip install -r requirements.txt
-
-
-    ```
-
-    (Make sure you have a `requirements.txt` file in your root directory containing `fastapi`, `uvicorn`, `python-dotenv`, `python-multipart`, `ollama`). If not, install them manually:
-
-    ```
     pip install fastapi uvicorn python-dotenv python-multipart ollama
 
-
     ```
 
-4.  **Install Frontend Dependencies & Build:**
-
-    * Navigate into the `frontend` directory (assuming your React app is there):
-
-        ```
-        cd frontend
-        npm install # or yarn install
-        npm run build # or yarn build
-
-
-        ```
-
-    * This will create a `build` folder inside `frontend`.
-
-5.  **Run the Backend Server:**
+4.  **Run the Backend Server:**
 
     * Navigate back to the root directory of the project:
 
@@ -143,7 +117,7 @@ If the executable isn't working or you prefer to run the application directly fr
 
         ```
 
-    * Your default web browser should automatically open to `http://localhost:8000`.
+    * Your default web browser should automatically open to `http://localhost:8000`. If now opened automatically paste the link in a browser
 
 ## ⚙️ Settings
 
@@ -151,9 +125,9 @@ Upon first launching the application, you'll be redirected to the **Settings** p
 
 Here, you can configure the following:
 
-* **Ollama Host URL:** The address where your Ollama server is running (e.g., `http://localhost:11434`).
+* **Ollama Host URL:** The address where your Ollama server is running (default is., `http://localhost:11434`).
 
-* **LLM Model Name:** The name of the Large Language Model you want to use (e.g., `llama3`, `gemma2`). This model must be downloaded in Ollama (see "Install Ollama & Download an LLM" above).
+* **LLM Model Name:** The name of the Large Language Model you want to use (e.g., `llama3.2`). This model must be downloaded in Ollama (see "Install Ollama & Download an LLM" above).
 
 **Important:** Ensure Ollama is running and the specified LLM model is downloaded before attempting to use the chat functionality.
 
@@ -185,7 +159,7 @@ Here's a breakdown of the process:
 
 4.  **👤 Persona Selection:**
 
-    * Once your chat is processed, the application lists all identified participants.
+    * Once your chat is processed, the application lists identified participants.
 
     * You then select one of these participants to be the "persona" that the AI will mimic. The other participant in the chat will be considered "You" for the AI's responses.
 
@@ -217,7 +191,7 @@ For more details, please refer to the "Data Privacy Policy for Local Use" sectio
 
 ## 🙏 Support the Project
 
-If you find this project useful, consider supporting us! You can find a donate link in the application header and on the upload page. Your contributions help us continue developing and improving privacy-focused AI tools.
+If you find this project useful, consider supporting us!, [Donate](https://bitwattr.netlify.app/donate). Your contributions help us continue developing and improving privacy-focused AI tools.
 
 ## 📞 Contact
 
