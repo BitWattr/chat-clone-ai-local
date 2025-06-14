@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Settings.css'; // Create this CSS file for styling
 
 function Settings() {
@@ -6,6 +7,7 @@ function Settings() {
     const [llmModel, setLlmModel] = useState('');
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         // Fetch current settings when the component mounts
@@ -60,6 +62,10 @@ function Settings() {
         }
     };
 
+    const handleChatNowClick = () => {
+        navigate('/'); // Navigate to the root path (chat page)
+    };
+
     return (
         <div className="settings-container">
             <h2>Ollama Settings</h2>
@@ -97,6 +103,12 @@ function Settings() {
                 Ensure Ollama is running and the specified model is downloaded.
                 You can download models using `ollama run [model_name]` in your terminal.
             </p>
+            <div className="chat-now-container">
+                <p>Done setting up LLM?</p>
+                <button onClick={handleChatNowClick} className="chat-now-button">
+                    Chat Now
+                </button>
+            </div>
         </div>
     );
 }

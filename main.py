@@ -66,7 +66,7 @@ async def cleanup_sessions():
     """
     try:
         while True:
-            await asyncio.sleep(15)  # Check every 15 seconds (reduced for quicker testing)
+            await asyncio.sleep(10)  # Check every 15 seconds (reduced for quicker testing)
             current_time = datetime.now()
             sessions_to_remove = []
 

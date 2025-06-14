@@ -24,7 +24,8 @@ function UploadForm({ onFileUploadSuccess }) {
     const [showTutorialModal, setShowTutorialModal] = useState(false);
 
     // Base URL for API calls, retrieved from environment variables for production readiness.
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+    // For a strictly local-only project, this might default to a local address or be hardcoded if no external APIs are ever involved.
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'; // Assuming local FastAPI runs on 8000
 
     /**
      * Effect hook to manage data policy agreement.
@@ -187,33 +188,16 @@ function UploadForm({ onFileUploadSuccess }) {
                 </p>
             </div>
 
-            {/* Run Locally Section */}
+            {/* Local Running Information */}
             <div className="run-locally-container">
-                <h3>Run this Project Locally</h3>
-                <p>This AI-powered person mimicry project is designed to run on your own machine. This ensures full control over your data and allows for 24/7 access without external server dependencies. Visit GitHub for local setup instructions.</p>
-                <a
-                    href="https://github.com/your-repo-link" // TODO: Replace with your actual GitHub repo link
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="visit-github-button"
-                    style={{
-                        background: '#24292e',
-                        color: 'white',
-                        padding: '10px 20px',
-                        borderRadius: '5px',
-                        textDecoration: 'none',
-                        fontWeight: 'bold',
-                        display: 'inline-block',
-                        marginTop: '10px',
-                        transition: 'transform 0.2s ease-in-out',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                    aria-label="Visit GitHub repository for local setup"
-                >
-                    Visit Git Repo
-                </a>
+                <h3>Running Locally</h3>
+                <p>
+                    This AI-powered person mimicry project is designed to run on your own machine.
+                    If you're having trouble, troubleshoot instructions are available on our
+                    <a href="https://github.com/BitWattr/BitWattr-Repo" target="_blank" rel="noopener noreferrer" className="inline-link"> GitHub repository</a>.
+                    Alternatively, you can use our hosted service at:{' '}
+                    <a href="https://chat-clone-ai.pages.dev/" target="_blank" rel="noopener noreferrer" className="inline-link">https://chat-clone-ai.pages.dev/</a>
+                </p>
                 <button
                     className="donate-button"
                     style={{
@@ -319,21 +303,21 @@ function UploadForm({ onFileUploadSuccess }) {
             {/* Data Policy Modal */}
             <div className={`policy-modal-overlay ${showPolicyModal ? 'visible' : ''}`} role="dialog" aria-modal="true" aria-labelledby="policyModalTitle">
                 <div className="policy-modal-content">
-                    <h2 id="policyModalTitle">Terms and Conditions</h2>
-                    <p>By using this AI-powered person mimicry project, you ("the User") agree to be bound by the following terms and conditions. Please read them carefully before using our service.</p>
+                    <h2 id="policyModalTitle">Terms and Conditions for Local Use</h2>
+                    <p>By using this AI-powered person mimicry project, you ("the User") agree to be bound by the following terms and conditions. Please read them carefully before using our locally-run service.</p>
 
-                    <h3>Service Provision</h3>
-                    <p>This project is provided "as is" and "as available" without any guarantees or warranties, express or implied. We do not guarantee that the service will be uninterrupted, error-free, or secure. Your use of the service is solely at your own risk.</p>
+                    <h3>Service Provision (Local)</h3>
+                    <p>This project is provided "as is" and "as available" for local execution on your machine without any guarantees or warranties, express or implied. We do not guarantee that the local service will be uninterrupted, error-free, or secure. Your use of the service is solely at your own risk.</p>
 
                     <h3>No Affiliation with WhatsApp</h3>
                     <p>This AI-powered person mimicry project is an independent service and is not affiliated, associated, authorized, endorsed by, or in any way officially connected with WhatsApp LLC or Meta Platforms, Inc. All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.</p>
 
                     <h3>User Responsibility</h3>
                     <ul>
-                        <li>You are solely responsible for the chat history files you upload to this project.</li>
+                        <li>You are solely responsible for the chat history files you upload to this project on your local machine.</li>
                         <li>You warrant that you have the necessary rights and permissions to upload and process the chat history files.</li>
                         <li>You understand that uploading chat history files may contain sensitive personal information. By proceeding, you acknowledge and accept all risks associated with providing such data.</li>
-                        <li>The BitWattr organization and its developers/operators shall not be held responsible for any direct, indirect, incidental, special, consequential, or punitive damages arising out of your use of the service, including but not limited to, loss of data, loss of profits, or any other intangible losses.</li>
+                        <li>The BitWattr organization and its developers/operators shall not be held responsible for any direct, indirect, incidental, special, consequential, or punitive damages arising out of your local use of the service, including but not limited to, loss of data, loss of profits, or any other intangible losses.</li>
                     </ul>
 
                     <h3>Intellectual Property</h3>
@@ -347,27 +331,27 @@ function UploadForm({ onFileUploadSuccess }) {
 
                     <hr /> {/* Separator */}
 
-                    <h2>Data Privacy Policy</h2>
-                    <p>At the BitWattr organization, your privacy is paramount. This policy outlines how we handle your data when you use our AI-powered person mimicry project.</p>
+                    <h2>Data Privacy Policy for Local Use</h2>
+                    <p>At the BitWattr organization, your privacy is paramount. This policy outlines how we handle your data when you use our AI-powered person mimicry project locally.</p>
 
-                    <h3>Data Collection</h3>
-                    <p>When you upload a WhatsApp chat history file, we temporarily process its content in memory to extract messages and participant information.</p>
+                    <h3>Data Collection (Local)</h3>
+                    <p>When you upload a WhatsApp chat history file, our *locally running* application temporarily processes its content *in memory* on your machine to extract messages and participant information.</p>
 
-                    <h3>Data Usage</h3>
-                    <p>The extracted chat data is used exclusively for the purpose of analyzing your chat history and facilitating interactive chat sessions with our AI personas within your active session.</p>
+                    <h3>Data Usage (Local)</h3>
+                    <p>The extracted chat data is used exclusively for the purpose of analyzing your chat history and facilitating interactive chat sessions with our AI personas *within your active session on your local machine*. No data leaves your machine.</p>
 
-                    <h3>Data Retention and Deletion</h3>
+                    <h3>Data Retention and Deletion (Local)</h3>
                     <ul>
                         <li>Your uploaded chat history files and the processed chat data are never stored permanently or written to disk.</li>
                         <li>All chat data is held in volatile memory only for the duration of your active session.</li>
-                        <li>Your session data, including your chat history, is permanently deleted from memory after 15 minutes of inactivity. This automated process ensures that no personal data remains on your system for extended periods.</li>
+                        <li>Your session data, including your chat history, is permanently deleted from memory after 30 minutes of inactivity.</li>
                     </ul>
 
-                    <h3>No Data Sharing</h3>
-                    <p>We do not share, sell, rent, or trade your chat data with any third parties for any purpose whatsoever.</p>
+                    <h3>No Data Sharing (Local)</h3>
+                    <p>We do not share, sell, rent, or trade your chat data with any third parties for any purpose whatsoever, as all processing occurs *locally on your machine*.</p>
 
-                    <h3>Security Measures</h3>
-                    <p>As this project runs locally on your machine, the security of your data is primarily dependent on your system's security. We implement reasonable technical and organizational measures within the application design to protect your data during its temporary processing. However, no method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your data, we cannot guarantee its absolute security.</p>
+                    <h3>Security Measures (Local)</h3>
+                    <p>As this project runs locally on your machine, the security of your data is primarily dependent on your system's security. We implement reasonable technical and organizational measures within the application design to protect your data during its temporary processing. However, no method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your data, we cannot guarantee its absolute security against vulnerabilities on your local system.</p>
 
                     <h3>Transparency</h3>
                     <p>We believe in transparency. The source code for this project is publicly available on GitHub, allowing you to inspect how your data is processed and handled.</p>
@@ -397,18 +381,15 @@ function UploadForm({ onFileUploadSuccess }) {
                     </a>
 
                     <h3>Local Running Emphasis</h3>
-                    <p>This project is designed to be run locally on your own machine, providing you with complete control over your data and allowing for 24/7 access without external server limitations. Please refer to our GitHub repository for detailed local setup instructions.</p>
+                    <p>This project is designed to be run locally on your own machine, providing you with complete control over your data and allowing for 24/7 access without external server limitations. All chat history processing and AI interactions occur on your local system. Please refer to our GitHub repository for detailed local setup instructions.</p>
 
                     <h3>Consent</h3>
-                    <p>By proceeding with the upload and use of this AI-powered person mimicry project, you explicitly consent to the terms of this Data Privacy Policy.</p>
+                    <p>By proceeding with the upload and use of this AI-powered person mimicry project *on your local machine*, you explicitly consent to the terms of this Data Privacy Policy.</p>
                     <button onClick={handleAgreeToPolicy} className="agree-button" aria-label="I agree to terms and conditions">
                         <FontAwesomeIcon icon={faCheckCircle} /> I Agree
                     </button>
                 </div>
             </div>
-
-            {/* Server Offline Modal - Removed as it's a local-only project */}
-            {/* Waiting for Server Modal - Removed as it's a local-only project */}
 
             {/* Tutorial Modal */}
             <div className={`policy-modal-overlay ${showTutorialModal ? 'visible' : ''}`} role="dialog" aria-modal="true" aria-labelledby="tutorialModalTitle">
