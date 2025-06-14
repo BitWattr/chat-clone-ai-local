@@ -194,7 +194,7 @@ function UploadForm({ onFileUploadSuccess }) {
                 <p>
                     This AI-powered person mimicry project is designed to run on your own machine.
                     If you're having trouble, troubleshoot instructions are available on our
-                    <a href="https://github.com/BitWattr/BitWattr-Repo" target="_blank" rel="noopener noreferrer" className="inline-link"> GitHub repository</a>.
+                    <a href="https://github.com/BitWattr/chat-clone-ai-local" target="_blank" rel="noopener noreferrer" className="inline-link"> GitHub repository</a>.
                     Alternatively, you can use our hosted service at:{' '}
                     <a href="https://chat-clone-ai.pages.dev/" target="_blank" rel="noopener noreferrer" className="inline-link">https://chat-clone-ai.pages.dev/</a>
                 </p>
