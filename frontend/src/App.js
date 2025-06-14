@@ -18,7 +18,7 @@ const AppHeader = () => {
     return (
         <header className="app-header">
             <nav className="nav-container">
-                <a href="https://bitwattr.netlify.app/" target="_blank" rel="noopener noreferrer" className="bitwattr-link" aria-label="Visit BitWattr website">
+                <a href="https://bitwattr.pages.dev/" target="_blank" rel="noopener noreferrer" className="bitwattr-link" aria-label="Visit BitWattr website">
                     BitWattr
                 </a>
                 <h1 className="app-title">
@@ -34,7 +34,7 @@ const AppHeader = () => {
                         <FontAwesomeIcon icon={faCog} /> Settings
                     </Link>
                     {/* Donate link now uses an <a> tag for external redirect and has a colorful button style */}
-                    <a href="https://bitwattr.netlify.app/donate" target="_blank" rel="noopener noreferrer" className="nav-link donate-button" aria-label="Go to Donate Page">
+                    <a href="https://bitwattr.pages.dev/donate" target="_blank" rel="noopener noreferrer" className="nav-link donate-button" aria-label="Go to Donate Page">
                         <FontAwesomeIcon icon={faHeart} /> Donate
                     </a>
                 </div>

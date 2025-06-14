@@ -152,7 +152,7 @@ For more details, please refer to the "Data Privacy Policy for Local Use" sectio
 
 ## 🙏 Support the Project
 
-If you find this project useful, consider supporting us!, [Donate](https://bitwattr.netlify.app/donate). Your contributions help us continue developing and improving privacy-focused AI tools.
+If you find this project useful, consider supporting us!, [Donate](https://bitwattr.pages.dev/donate). Your contributions help us continue developing and improving privacy-focused AI tools.
 
 ## 📞 Contact
 

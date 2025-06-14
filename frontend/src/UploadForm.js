@@ -226,7 +226,7 @@ function UploadForm({ onFileUploadSuccess }) {
             <div className="more-about-bitwattr-container">
                 <h3>More about the BitWattr Organization</h3>
                 <a
-                    href="https://bitwattr.netlify.app/"
+                    href="https://bitwattr.pages.dev/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="visit-bitwattr-button"
