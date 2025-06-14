@@ -43,7 +43,7 @@ We provide a pre-built executable, this is the easiest way to get started.
 
 1.  **Download the Executable:**
 
-    * Go to our [GitHub Releases page](https://github.com/BitWattr/BitWattr-Repo/releases) (or the designated download location).
+    * Go to our [GitHub Releases page](https://github.com/BitWattr/chat-clone-ai-local) (or the designated download location).
 
     * Download the latest `.exe` (for Windows) or equivalent executable for your OS.
 
