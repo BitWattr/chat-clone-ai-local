@@ -140,9 +140,7 @@ Here's a breakdown of the process:
 
 **In essence, this project leverages your private chat history to create a dynamic AI twin of a specific person, allowing it to generate responses that closely resemble how that person would communicate – all within the secure confines of your local environment.**
 
-## 🛡️ Privacy Policy
-
-Your privacy is our top priority.
+## 🛡️ Privacy
 
 * **No Data Storage:** We do not store any of your chat data or personal information on any external servers. All processing happens *locally* and *in-memory* on your machine.
 
