@@ -70,8 +70,8 @@ If the executable isn't working or you prefer to run the application directly fr
 1.  **Clone the Repository:**
 
     ```
-    git clone [https://github.com/BitWattr/BitWattr-Repo.git](https://github.com/BitWattr/BitWattr-Repo.git)
-    cd BitWattr-Repo
+    git clone https://github.com/BitWattr/chat-clone-ai-local
+    cd chat-clone-ai-local
 
 
     ```
@@ -102,12 +102,6 @@ If the executable isn't working or you prefer to run the application directly fr
 4.  **Run the Backend Server:**
 
     * Navigate back to the root directory of the project:
-
-        ```
-        cd ..
-
-
-        ```
 
     * Start the FastAPI server:
 
@@ -195,7 +189,7 @@ If you find this project useful, consider supporting us!, [Donate](https://bitwa
 
 ## 📞 Contact
 
-For questions, issues, or contributions, please visit our [GitHub repository](https://github.com/BitWattr/BitWattr-Repo) and open an issue or pull request.
+For questions, issues, or contributions, please visit our [GitHub repository](https://github.com/BitWattr/chat-clone-ai-local) and open an issue or pull request.
 
 ## 🔗 Hosted Service
 
