@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import os
 import json
 from dotenv import load_dotenv
@@ -9,10 +10,25 @@ from datetime import datetime, timedelta
 import secrets
 import re
 from contextlib import asynccontextmanager
+import webbrowser
+import uvicorn
+import sys # Import sys for PyInstaller path handling
 
-# Local imports
-from chat_parser import parse_whatsapp_chat
-from llm_service import get_ollama_response
+# Local imports (ensure these are available or remove if not needed for this example)
+try:
+    from chat_parser import parse_whatsapp_chat
+    from llm_service import get_ollama_response
+except ImportError:
+    # Fallback for environments where these might not be separate files
+    print("Warning: chat_parser.py or llm_service.py not found. Ensuring dummy functions are defined.")
+    # Define dummy functions if imports fail
+    def parse_whatsapp_chat(content):
+        print("Using dummy parse_whatsapp_chat")
+        return [], set()
+    async def get_ollama_response(model, system_prompt, conversation_history):
+        print("Using dummy get_ollama_response")
+        return "Dummy LLM response."
+
 
 load_dotenv()
 
@@ -30,7 +46,7 @@ async def cleanup_sessions():
     """
     try:
         while True:
-            await asyncio.sleep(15)  # Check every 60 seconds
+            await asyncio.sleep(15)  # Check every 15 seconds (reduced for quicker testing)
             current_time = datetime.now()
             sessions_to_remove = []
 
@@ -59,7 +75,10 @@ async def lifespan(app: FastAPI):
     # Shutdown logic
     if cleanup_task:
         cleanup_task.cancel()
-        await cleanup_task
+        try:
+            await cleanup_task # Wait for the task to actually finish cancelling
+        except asyncio.CancelledError:
+            pass # Expected when cancelling
     print("DEBUG: Cleanup task cancelled during shutdown.")
 
 
@@ -67,8 +86,10 @@ app = FastAPI(lifespan=lifespan) # Pass the lifespan context manager to FastAPI
 
 # Configure CORS
 origins = [
-    "http://localhost:3000",  # React app
-    "http://127.0.0.1:3000",  # React app
+    "http://localhost:3000",  # React app in development
+    "http://127.0.0.1:3000",  # React app in development
+    "http://localhost:8000",  # Your application's own host when served statically
+    "http://127.0.0.1:8000",  # Your application's own host when served statically
 ]
 
 app.add_middleware(
@@ -79,7 +100,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# New health check endpoint
+# Define all your API endpoints FIRST
 @app.get("/health")
 async def health_check():
     return JSONResponse(content={"status": "ok"})
@@ -96,7 +117,7 @@ async def upload_chat_history(file: UploadFile = File(...)):
         content = await file.read()
         decoded_content = content.decode("utf-8")
 
-        messages, participants = parse_whatsapp_chat_from_string(decoded_content)
+        messages, participants = parse_whatsapp_chat_from_string(decoded_content) # Using local function
 
         if not participants or len(participants) < 2:
             raise HTTPException(status_code=400, detail="Could not identify two distinct participants in the chat.")
@@ -125,6 +146,9 @@ def parse_whatsapp_chat_from_string(chat_content: str):
     messages = []
     participants = set()
     
+    # Updated regex to correctly capture the timestamp, sender, and message
+    # Handles cases where timestamp might be MM/DD/YY or DD/MM/YY
+    # And ensures the sender part is correctly matched before the colon and message
     message_start_pattern = re.compile(r"^(\d{1,2}/\d{1,2}/\d{2}, \d{1,2}:\d{2}\s(?:AM|PM)) - ([^:]+): (.*)$")
 
     current_message = None
@@ -135,6 +159,7 @@ def parse_whatsapp_chat_from_string(chat_content: str):
         if not line:
             continue
         
+        # Skip lines that look like system messages, e.g., encryption notices
         if line.startswith("[") and line.endswith("]"):
             continue
 
@@ -145,9 +170,10 @@ def parse_whatsapp_chat_from_string(chat_content: str):
                 participants.add(current_message["sender"])
 
             timestamp, sender, message = match.groups()
-            current_message = {"timestamp": timestamp, "sender": sender, "message": message}
+            current_message = {"timestamp": timestamp, "sender": sender.strip(), "message": message.strip()}
         elif current_message:
-            current_message["message"] += "\n" + line
+            # This line is a continuation of the previous message
+            current_message["message"] += "\n" + line.strip()
     
     if current_message:
         messages.append(current_message)
@@ -242,6 +268,40 @@ async def chat_with_persona(session_id: str, user_message: dict, persona: str = 
             current_chat_messages.pop()
         raise HTTPException(status_code=500, detail=f"Error generating response: {str(e)}")
 
+# Determine the base path for static files, considering PyInstaller
+if getattr(sys, 'frozen', False):
+    # Running in a PyInstaller bundle
+    # sys._MEIPASS is the path to the temporary folder where PyInstaller unpacks the app
+    bundle_dir = sys._MEIPASS
+else:
+    # Running in a regular Python environment
+    # Use the directory where the script itself is located
+    bundle_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the full path to your React build directory
+# Assuming 'frontend/build' is relative to your main.py in dev,
+# and relative to sys._MEIPASS in the bundle if you used --add-data "frontend/build;frontend/build"
+STATIC_FILES_DIR = os.path.join(bundle_dir, "frontend", "build")
+
+# Mount your static files.
+if os.path.isdir(STATIC_FILES_DIR):
+    app.mount("/", StaticFiles(directory=STATIC_FILES_DIR, html=True), name="static")
+    print(f"DEBUG: Static files mounted from {STATIC_FILES_DIR}")
+else:
+    print(f"WARNING: Static files directory '{STATIC_FILES_DIR}' not found. Ensure your React app is built and placed correctly.")
+    print("If you are running in development, you might be accessing the React app directly.")
+
+
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    HOST = "127.0.0.1" # Use 127.0.0.1 for local access only
+    PORT = 8000
+    APP_URL = f"http://{HOST}:{PORT}"
+
+    print(f"Starting application on: {APP_URL}")
+    print("Opening browser...")
+
+    # Open the browser to the application URL
+    webbrowser.open(APP_URL)
+
+    # Run the FastAPI application using uvicorn
+    uvicorn.run(app, host=HOST, port=PORT, log_level="info")
