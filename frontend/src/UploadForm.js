@@ -321,7 +321,7 @@ function UploadForm({ onFileUploadSuccess }) {
                     </ul>
 
                     <h3>Intellectual Property</h3>
-                    <p>All content, features, and functionality provided as part of this project (excluding user-uploaded chat data) are owned by the BitWattr organization or its licensors and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
+                    <p>The software code, design, and original content of this project (excluding user-uploaded chat data) are copyrighted by the individual contributors to the BitWattr organization and are protected by international copyright laws. Use of these materials is governed by the project's open-source license.</p>
 
                     <h3>Changes to Terms</h3>
                     <p>The BitWattr organization reserves the right to modify or replace these Terms and Conditions at any time. We will endeavor to provide reasonable notice prior to any new terms taking effect. Your continued use of the service after any such changes constitutes your acceptance of the new Terms and Conditions.</p>
