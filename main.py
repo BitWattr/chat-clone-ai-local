@@ -16,28 +16,48 @@ import sys # Import sys for PyInstaller path handling
 
 # Local imports (ensure these are available or remove if not needed for this example)
 try:
-    from chat_parser import parse_whatsapp_chat
+    # We will no longer use parse_whatsapp_chat from chat_parser as it's in main.py
     from llm_service import get_ollama_response
 except ImportError:
     # Fallback for environments where these might not be separate files
-    print("Warning: chat_parser.py or llm_service.py not found. Ensuring dummy functions are defined.")
+    print("Warning: llm_service.py not found. Ensuring dummy functions are defined.")
     # Define dummy functions if imports fail
-    def parse_whatsapp_chat(content):
-        print("Using dummy parse_whatsapp_chat")
-        return [], set()
-    async def get_ollama_response(model, system_prompt, conversation_history):
+    async def get_ollama_response(model, system_prompt, conversation_history, ollama_host):
         print("Using dummy get_ollama_response")
         return "Dummy LLM response."
 
 
 load_dotenv()
 
+# --- Settings Management ---
+SETTINGS_FILE = "settings.json"
+
+def load_settings():
+    """Loads settings from a JSON file."""
+    if os.path.exists(SETTINGS_FILE):
+        with open(SETTINGS_FILE, 'r') as f:
+            return json.load(f)
+    return {
+        "ollama_host": os.getenv("OLLAMA_HOST", "http://localhost:11434"),
+        "llm_model": os.getenv("LLM_MODEL", "gemma2") # Changed default model to gemma2
+    }
+
+def save_settings(settings):
+    """Saves settings to a JSON file."""
+    with open(SETTINGS_FILE, 'w') as f:
+        json.dump(settings, f, indent=4)
+
+# Load initial settings at startup
+app_settings = load_settings()
+# --- End Settings Management ---
+
+
 # In-memory storage for chat data after parsing.
 # {session_id: {"participants": ["Arjun", "Ramesh"], "messages": [...], "last_access_time": datetime_object}}
 parsed_chat_data = {}
 
 # Session timeout in minutes
-SESSION_TIMEOUT_MINUTES = 1
+SESSION_TIMEOUT_MINUTES = 30
 cleanup_task = None # To hold the reference to the cleanup task
 
 async def cleanup_sessions():
@@ -104,6 +124,30 @@ app.add_middleware(
 @app.get("/health")
 async def health_check():
     return JSONResponse(content={"status": "ok"})
+
+# --- New Settings Endpoints ---
+@app.get("/settings")
+async def get_current_settings():
+    """Retrieves the current Ollama host and model settings."""
+    return JSONResponse(content=app_settings)
+
+@app.post("/settings")
+async def update_settings(new_settings: dict):
+    """Updates the Ollama host and model settings."""
+    global app_settings
+    
+    ollama_host = new_settings.get("ollama_host")
+    llm_model = new_settings.get("llm_model")
+
+    if not ollama_host or not llm_model:
+        raise HTTPException(status_code=400, detail="Both 'ollama_host' and 'llm_model' are required.")
+
+    app_settings["ollama_host"] = ollama_host
+    app_settings["llm_model"] = llm_model
+    save_settings(app_settings)
+    print(f"DEBUG: Settings updated to: {app_settings}")
+    return JSONResponse(content={"message": "Settings updated successfully!", "current_settings": app_settings})
+# --- End New Settings Endpoints ---
 
 
 @app.post("/upload_chat_history/")
@@ -237,6 +281,9 @@ async def chat_with_persona(session_id: str, user_message: dict, persona: str = 
     conversation_messages_for_llm = []
     
     for msg in current_chat_messages:
+        # Determine the role for the LLM based on who the message is from
+        # If the sender is the 'other_participant', it's a 'user' message to the LLM.
+        # If the sender is the 'persona' (the one the LLM is acting as), it's an 'assistant' message.
         role = "user" if msg["sender"] == other_participant else "assistant"
         conversation_messages_for_llm.append({"role": role, "content": f"{msg['message']}"})
 
@@ -250,9 +297,10 @@ async def chat_with_persona(session_id: str, user_message: dict, persona: str = 
     
     try:
         response_content = await get_ollama_response(
-            model=os.getenv("LLM_MODEL"),
+            model=app_settings["llm_model"], # Use the model from settings
             system_prompt=system_prompt,
-            conversation_history=conversation_messages_for_llm
+            conversation_history=conversation_messages_for_llm,
+            ollama_host=app_settings["ollama_host"] # Use the host from settings
         )
         
         new_ai_message_entry = {
