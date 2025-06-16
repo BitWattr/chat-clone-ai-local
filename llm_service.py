@@ -14,7 +14,7 @@ async def get_ollama_response(model: str, system_prompt: str, conversation_histo
     conversation_history should be a list of dicts with 'role' and 'content'.
     """
     messages = [{"role": "system", "content": system_prompt}] + conversation_history
-    print("prompt is: ", messages)
+    #print("prompt is: ", messages)
     try:
         # Use the asynchronous client for better performance in FastAPI
         client = ollama.AsyncClient(host=ollama_host) # Use the passed ollama_host

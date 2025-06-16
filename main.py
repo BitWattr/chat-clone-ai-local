@@ -190,38 +190,81 @@ def parse_whatsapp_chat_from_string(chat_content: str):
     messages = []
     participants = set()
     
-    # Updated regex to correctly capture the timestamp, sender, and message
-    # Handles cases where timestamp might be MM/DD/YY or DD/MM/YY
-    # And ensures the sender part is correctly matched before the colon and message
-    message_start_pattern = re.compile(r"^(\d{1,2}/\d{1,2}/\d{2}, \d{1,2}:\d{2}\s(?:AM|PM)) - ([^:]+): (.*)$")
+    # Original WhatsApp pattern
+    whats_app_message_start_pattern = re.compile(r"^(\d{1,2}/\d{1,2}/\d{2,4}, \d{1,2}:\d{2}(?:\s*(?:AM|PM|am|pm))?)\s*-\s*([^:]+):\s*(.*)$")
+
+    # New pattern for "Sender: Message" format
+    simple_message_pattern = re.compile(r"^([^:]+):\s*(.*)$")
 
     current_message = None
+    is_whatsapp_format = False # Flag to determine which format is being processed
 
+    # First, try to parse as WhatsApp format
     for line in chat_content.splitlines():
-        line = line.strip()
+        trimmed_line = line.strip()
 
-        if not line:
-            continue
-        
-        # Skip lines that look like system messages, e.g., encryption notices
-        if line.startswith("[") and line.endswith("]"):
+        if not trimmed_line:
             continue
 
-        match = message_start_pattern.match(line)
+        # Skip known WhatsApp informational messages
+        if trimmed_line.startswith("[") and trimmed_line.endswith("]"):
+            continue
+        if "Messages and calls are end-to-end encrypted" in trimmed_line:
+            continue
+        if "<Media omitted>" in trimmed_line:
+            continue
+        if "(file attached)" in trimmed_line.lower():
+            continue
+        if "live location shared" in trimmed_line.lower():
+            continue
+        if trimmed_line.lower() == "null":
+            continue
+
+        match = whats_app_message_start_pattern.match(trimmed_line)
         if match:
+            is_whatsapp_format = True
             if current_message:
                 messages.append(current_message)
                 participants.add(current_message["sender"])
-
             timestamp, sender, message = match.groups()
-            current_message = {"timestamp": timestamp, "sender": sender.strip(), "message": message.strip()}
-        elif current_message:
-            # This line is a continuation of the previous message
-            current_message["message"] += "\n" + line.strip()
+            current_message = {"timestamp": timestamp.strip(), "sender": sender.strip(), "message": message.strip()}
+        elif current_message and is_whatsapp_format:
+            # Continuation of a WhatsApp message
+            current_message["message"] += "\n" + trimmed_line
+
+    # If no WhatsApp formatted messages were found, try the simple format
+    if not is_whatsapp_format or not messages:
+        messages.clear() # Clear any partial WhatsApp messages
+        participants.clear() # Clear any partial participants
+        current_message = None # Reset current_message
+
+        for line in chat_content.splitlines():
+            trimmed_line = line.strip()
+
+            if not trimmed_line:
+                continue
+
+            match = simple_message_pattern.match(trimmed_line)
+            if match:
+                if current_message:
+                    messages.append(current_message)
+                    participants.add(current_message["sender"])
+                sender, message = match.groups()
+                # For the "Sender: Message" format, use a placeholder timestamp
+                current_message = {"timestamp": "UNKNOWN", "sender": sender.strip(), "message": message.strip()}
+            elif current_message:
+                # Continuation of the previous message for the simple format
+                current_message["message"] += "\n" + trimmed_line
     
+    # Push the last message after the loop finishes
     if current_message:
         messages.append(current_message)
         participants.add(current_message["sender"])
+
+    # Ensure at least two distinct participants are identified for a valid chat session.
+    if len(participants) < 2:
+        # If neither format yields two participants, raise an error.
+        raise ValueError("Could not identify two distinct participants in the chat.")
 
     return messages, participants
 
@@ -343,6 +386,7 @@ else:
 if __name__ == "__main__":
     HOST = "127.0.0.1" # Use 127.0.0.1 for local access only
     PORT = 8000
+    print("hai")
     APP_URL = f"http://{HOST}:{PORT}"
 
     print(f"Starting application on: {APP_URL}")
@@ -350,6 +394,6 @@ if __name__ == "__main__":
 
     # Open the browser to the application URL
     webbrowser.open(APP_URL)
-
+    print("hello")
     # Run the FastAPI application using uvicorn
     uvicorn.run(app, host=HOST, port=PORT, log_level="info")
