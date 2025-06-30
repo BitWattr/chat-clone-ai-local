@@ -1,11 +1,28 @@
-/// <reference lib="deno.ns" />
 // AnythingAI/worker/src/deno_adapter.ts
 
 // Import AppBindings along with KvStore and AiClient
 import app, { KvStore, AiClient, AppBindings } from './index.ts';
 import { serve } from 'https://deno.land/std@0.207.0/http/server.ts';
 import { ExecutionContext } from 'hono'; // Import ExecutionContext for type hinting
-// Removed fs import, as it's no longer needed
+
+// In-memory KV store for Deno local development
+class InMemoryKvStore implements KvStore {
+    private store: Map<string, { value: string; expiration?: number }> = new Map();
+
+    async get(key: string): Promise<string | null> {
+        const entry = this.store.get(key);
+        if (entry && (!entry.expiration || entry.expiration > Date.now())) {
+            return entry.value;
+        }
+        this.store.delete(key); // Remove expired entry
+        return null;
+    }
+
+    async put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void> {
+        const expiration = options?.expirationTtl ? Date.now() + options.expirationTtl * 1000 : undefined;
+        this.store.set(key, { value, expiration });
+    }
+}
 
 // Simple Ollama client for Deno
 class OllamaAiClient implements AiClient {
@@ -41,60 +58,22 @@ class OllamaAiClient implements AiClient {
             throw new Error(`Ollama API error: ${response.statusText}`);
         }
 
-        const data: any = await response.json();
+        const data = await response.json();
         return { response: data.message.content };
     }
 }
 
-(async () => {
-  // In-memory KV store for Deno local development
-  class InMemoryKvStore implements KvStore {
-    private store: Map<string, { value: string; expiration?: number }> = new Map();
-    async get(key: string): Promise<string | null> {
-      const entry = this.store.get(key);
-      if (entry && (!entry.expiration || entry.expiration > Date.now())) {
-        return entry.value;
-      }
-      this.store.delete(key); // Remove expired entry
-      return null;
-    }
-    async put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void> {
-      const expiration = options?.expirationTtl ? Date.now() + options.expirationTtl * 1000 : undefined;
-      this.store.set(key, { value, expiration });
-    }
-  }
+const kvStore = new InMemoryKvStore();
+const ollamaBaseUrl = Deno.env.get('OLLAMA_API_BASE_URL') || 'http://localhost:11434';
+const ollamaModel = Deno.env.get('OLLAMA_MODEL') || 'llama3.2'; // Default Ollama model
+const aiClient = new OllamaAiClient(ollamaBaseUrl, ollamaModel);
 
-  // Read config.json from the root directory using Deno APIs
-  let config: { ollama_url: string; model_name: string } = {
-    ollama_url: "http://localhost:11434",
-    model_name: "llama3.2" // Use llama3.2 as the default fallback
-  };
-  try {
-    let configPath = new URL("../../config.json", import.meta.url).pathname;
-    if (Deno.build.os === "windows" && configPath.startsWith("/")) {
-      configPath = configPath.slice(1);
-    }
-    configPath = decodeURIComponent(configPath);
-    const configRaw = await Deno.readTextFile(configPath);
-    const parsed = JSON.parse(configRaw);
-    // Only override if values are present and valid
-    config.ollama_url = parsed.ollama_url || config.ollama_url;
-    config.model_name = parsed.model_name || config.model_name;
-    console.log("Loaded Ollama config from config.json:", config);
-  } catch (e) {
-    console.warn("Could not read config.json, using defaults:", e);
-  }
+// Create the environment object to pass to Hono's fetch
+const honoEnv: AppBindings = { kvStore, aiClient };
 
-  const kvStore = new InMemoryKvStore();
-  const ollamaBaseUrl = config.ollama_url;
-  const ollamaModel = config.model_name;
-  const aiClient = new OllamaAiClient(ollamaBaseUrl, ollamaModel);
-  const honoEnv: AppBindings = { kvStore, aiClient };
+// Serve the Hono app using Deno's serve function, passing the honoEnv directly
+serve((request: Request) => app.fetch(request, honoEnv, {} as ExecutionContext)); // Cast empty object to ExecutionContext
 
-  // Serve the Hono app using Deno's serve function, passing the honoEnv directly
-  serve((request: Request) => app.fetch(request, honoEnv, {} as ExecutionContext)); // Cast empty object to ExecutionContext
-
-  console.log(`Deno server is running on http://localhost:8000`);
-  console.log(`Ollama API Base URL: ${ollamaBaseUrl}`);
-  console.log(`Ollama Model: ${ollamaModel}`);
-})();
+console.log(`Deno server is running on http://localhost:8000`);
+console.log(`Ollama API Base URL: ${ollamaBaseUrl}`);
+console.log(`Ollama Model: ${ollamaModel}`);
