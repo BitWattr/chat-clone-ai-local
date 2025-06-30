@@ -5,3 +5,4 @@
 /build
 /worker/node_modules
 *.exe
+*.zip
