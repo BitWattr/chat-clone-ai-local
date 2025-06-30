@@ -5,5 +5,16 @@
   "license": "MIT",
   "dependencies": {
     "open": "^10.1.2"
+  },
+  "bin": "start-app.js",
+  "pkg": {
+    "scripts": "start-app.js",
+    "assets": [
+      "worker/src/**/*",
+      "frontend/build/**/*"
+    ]
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
   }
 }

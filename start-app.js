@@ -1,12 +1,21 @@
 // Node.js launcher script to start Deno backend, React frontend, and open browser
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
+
+// Determine Deno binary path
+let denoBinary = 'deno';
+if (process.platform === 'win32') {
+  const localDeno = path.join(__dirname, 'deno.exe');
+  if (fs.existsSync(localDeno)) {
+    denoBinary = localDeno;
+  }
+}
 
 // Start Deno backend
-const denoProcess = spawn('deno', ['run', '--allow-env', '--allow-net', 'src/deno_entry.ts'], {
+const denoProcess = spawn(denoBinary, ['run', '--allow-env', '--allow-net', 'src/deno_entry.ts'], {
   cwd: path.join(__dirname, 'worker'),
-  stdio: 'inherit',
-  shell: true
+  stdio: 'inherit'
 });
 
 denoProcess.on('error', (err) => {
@@ -15,10 +24,9 @@ denoProcess.on('error', (err) => {
 });
 
 // Start React frontend
-const frontendProcess = spawn('npm', ['run', 'start'], {
+const frontendProcess = spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'start'], {
   cwd: path.join(__dirname, 'frontend'),
-  stdio: 'inherit',
-  shell: true
+  stdio: 'inherit'
 });
 
 frontendProcess.on('error', (err) => {
