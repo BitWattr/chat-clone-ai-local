@@ -228,6 +228,10 @@ function UploadForm({ onFileUploadSuccess }) {
         <div className="upload-form-wrapper">
             <div className="upload-form-section">
                 <div className="upload-form-container">
+                    <div className="ollama-config-info" style={{ marginBottom: '1em', color: '#555', fontSize: '0.95em' }}>
+                        <FontAwesomeIcon icon={faQuestionCircle} style={{ marginRight: '0.5em' }} />
+                        You can change Ollama API URL and model by editing <b>config.json</b> in the app folder.
+                    </div>
                     <h2>Upload Chat History (.txt)</h2>
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="file-upload" className="custom-file-upload">

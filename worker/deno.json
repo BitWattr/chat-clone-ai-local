@@ -3,5 +3,18 @@
     "hono/": "jsr:@hono/hono@^4.0.0/",
     "hono": "jsr:@hono/hono@^4.0.0",
     "@opensrc/deno-open": "jsr:@opensrc/deno-open@^0.1.0"
-  }
+  },
+  "compilerOptions": {
+    "lib": [
+      "es2022",
+      "webworker"
+    ],
+    "strict": true,
+    "types": [
+      "@cloudflare/workers-types"
+    ]
+  },
+  "unstable": [
+    "sloppy-imports"
+  ]
 }

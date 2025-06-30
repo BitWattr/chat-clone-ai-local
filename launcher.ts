@@ -23,7 +23,7 @@ function streamOutput(process: Deno.Process, name: string) {
 }
 
 const backendProcess = Deno.run({
-  cmd: ["deno", "run", "--allow-env", "--allow-net", "src/deno_entry.ts"],
+  cmd: ["deno", "run", "--allow-env", "--allow-net", "--allow-read", "src/deno_entry.ts"],
   cwd: "./worker",
   stdout: "piped",
   stderr: "piped",
