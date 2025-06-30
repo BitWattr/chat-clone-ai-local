@@ -58,12 +58,10 @@ You can run the application locally in two ways:
 
 ## ⚙️ Settings
 
-Upon first launching the application, you'll be redirected to the **Settings** page. You can also access it anytime by clicking the ⚙️ **Settings** link in the header.
-
-Here, you can configure the following:
+You can change the Ollama API URL and model by editing the config.json file in the root folder.
 
 * **Ollama Host URL:** The address where your Ollama server is running (default is `http://localhost:11434`).
-* **LLM Model Name:** The name of the Large Language Model you want to use (e.g., `llama3.2`). This model must be downloaded in Ollama (see "Install Ollama & Download an LLM" above).
+* **LLM Model Name:** The name of the Large Language Model you want to use (default is `llama3.2`). This model must be downloaded in Ollama (see "Install Ollama & Download an LLM" above).
 
 **Important:** Ensure Ollama is running and the specified LLM model is downloaded before attempting to use the chat functionality.
 
