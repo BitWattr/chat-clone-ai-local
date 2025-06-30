@@ -5,9 +5,9 @@ Welcome to the AI Person Mimicry Chat project! This application allows you to ut
 ## ✨ Features
 
 * **🕵️ Persona Mimicry:** Select your WhatsApp chat history file and select a participant for the AI to mimic.
-* **🔒 Local Processing:** All chat parsing happens locally on your machine and AI interactions using Ollama on your machine itself. BitWattr doesn't guarantee privacy as it depends on your machine and Ollama.
+* **🔒 Local Processing:** All chat parsing happens locally on your machine and AI interactions using Ollama on your machine itself. BitWattr does not guarantee privacy as it depends on your machine and Ollama.
 * **🚀 Easy Setup:** Get started quickly with a pre-built executable or by running the Deno source code directly.
-* **⚙️ Customizable LLM Settings:** Adjust your Ollama host and LLM model directly from the application's settings or by modifying the `config.json` file.
+* **⚙️ Customizable LLM Settings:** Adjust your Ollama host and LLM model directly from the application's settings page or by modifying `config.json` in downloaded releases.
 * **🌐 Web-Based Interface:** Access the application easily through your web browser.
 
 ## 🚀 Getting Started
@@ -28,19 +28,19 @@ To use this application, you'll need to have [Ollama](https://ollama.com/downloa
 
 ### 2. Local Setup Options
 
-You can run the application locally in a couple of ways:
+You can run the application locally in two ways:
 
-#### Running from a Release Download 🚀 (Windows)
+#### Running from Downloaded Release 📦 (Windows Only)
 
-1.  **Download Release:** Download the latest `.zip` release from the project's GitHub releases page.
-2.  **Extract:** Extract the contents of the downloaded `.zip` file to a directory of your choice.
-3.  **Run Launcher:** Navigate to the extracted folder and run `launcher.exe`.
-4.  **Configure (Optional):** You can change the Ollama API URL and model by editing the `config.json` file located in the extracted folder.
-5.  Your default web browser should automatically open to `http://localhost:3000`. If not, paste the link into your browser.
+1.  **Download Release:** Download the latest `.zip` file from the [releases page](https://github.com/BitWattr/chat-clone-ai-local/releases).
+2.  **Extract:** Extract the contents of the zip file to your desired location.
+3.  **Run:** Execute `launcher.exe` from the extracted folder.
+4.  Your default web browser should automatically open to `http://localhost:3000`. If not, paste the link into a browser.
+5.  **Configure (Optional):** You can change the Ollama API URL and model by editing the `config.json` file in the extracted folder.
 
-#### Running from Source Code 💻 (Windows, macOS, Linux)
+#### Running from Source 💻 (Windows, macOS, Linux)
 
-1.  **Install Deno:** If you don't have Deno installed, follow the instructions on the [Deno website](https://deno.land/#installation).
+1.  **Install Deno:** If you don't have Deno installed, follow the instructions at <https://deno.land/#installation>.
 2.  **Clone the Repository:**
 
     ```bash
@@ -48,14 +48,13 @@ You can run the application locally in a couple of ways:
     cd chat-clone-ai-local
     ```
 
-3.  **Run the Project:**
+3.  **Run the Application:**
 
     ```bash
-    deno compile --no-check --allow-run --allow-env --allow-net --allow-read launcher.ts
+    deno run --allow-run --allow-env --allow-net --allow-read launcher.ts
     ```
 
-    This command compiles and runs the `launcher.ts` script.
-4.  Your default web browser should automatically open to `http://localhost:3000`. If not, paste the link into your browser.
+4.  Your default web browser should automatically open to `http://localhost:3000`. If not, paste the link into a browser.
 
 ## ⚙️ Settings
 
@@ -76,9 +75,9 @@ Here's a breakdown of the process:
 
 1.  **📤 Upload Chat History:**
     * You begin by uploading your WhatsApp chat history as a `.txt` file. A detailed tutorial on how to export this file from WhatsApp is available on the upload page.
-    * Your locally running backend service (built with Deno) receives this file.
+    * Your locally running backend service receives this file.
 2.  **📝 Parse Chat Data:**
-    * The uploaded chat content is immediately parsed *in-memory* using a custom Deno parser and integrated into the main application logic.
+    * The uploaded chat content is immediately parsed *in-memory* using a custom Deno parser.
     * This process extracts individual messages, their timestamps, and identifies all unique participants in the conversation.
 3.  **⏳ Session Management:**
     * A unique, temporary session ID is generated for your parsed chat data.
