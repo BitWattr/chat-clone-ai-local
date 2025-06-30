@@ -357,8 +357,8 @@ John Doe: Sounds lovely! Enjoy!
             {/* Run Locally Section */}
             <div className="run-locally-section">
                 <div className="run-locally-container">
-                    <h3>Run this Project Locally</h3>
-                    <p>This AI-powered person mimicry project is designed to run on your own machine. This ensures full control over your data and allows for 24/7 access without server limitations. Visit GitHub for local setup instructions.</p>
+                    <h3>Running Locally</h3>
+                    <p>You're running this AI-powered person mimicry project on your own machine. This ensures full control over your data and allows for 24/7 access without server limitations. Visit GitHub for local setup instructions.</p>
                     <a
                         href="https://github.com/BitWattr/chat-clone-ai-local"
                         target="_blank"
