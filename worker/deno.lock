@@ -1,10 +1,22 @@
 {
   "version": "5",
+  "specifiers": {
+    "jsr:@hono/hono@4": "4.8.3"
+  },
+  "jsr": {
+    "@hono/hono@4.8.3": {
+      "integrity": "f17509836610b97e9ec86bce5349387115c35ee72b7b29fd2b7944abe5f843ab"
+    }
+  },
   "remote": {
     "https://deno.land/std@0.207.0/async/delay.ts": "a6142eb44cdd856b645086af2b811b1fcce08ec06bb7d50969e6a872ee9b8659",
     "https://deno.land/std@0.207.0/http/server.ts": "f3cde6672e631d3e00785743cfa96bfed275618c0352c5ae84abbe5a2e0e4afc"
   },
   "workspace": {
+    "dependencies": [
+      "jsr:@hono/hono@4",
+      "jsr:@opensrc/deno-open@0.1"
+    ],
     "packageJson": {
       "dependencies": [
         "npm:@cloudflare/workers-types@^4.20240529.0",

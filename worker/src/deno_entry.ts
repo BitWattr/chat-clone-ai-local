@@ -1,3 +1,5 @@
+/// <reference lib="deno.ns" />
+
 // AnythingAI/worker/src/deno_main.ts
 // This is the main entry file for running the application in Deno.
 

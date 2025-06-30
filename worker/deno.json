@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "hono/": "jsr:@hono/hono@^4.0.0/",
+    "hono": "jsr:@hono/hono@^4.0.0",
+    "@opensrc/deno-open": "jsr:@opensrc/deno-open@^0.1.0"
+  }
+}
