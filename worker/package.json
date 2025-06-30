@@ -1,0 +1,22 @@
+{
+  "name": "anything-ai-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker backend for AnythingAI",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "hono": "^4.8.3",
+    "itty-router": "^2.6.6",
+    "node-fetch": "^3.3.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "typescript": "^5.5.3",
+    "wrangler": "^3.60.0"
+  }
+}

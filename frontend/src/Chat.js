@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faArrowLeft, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faArrowLeft, faUserCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Chat Component
@@ -25,6 +25,9 @@ function Chat({ sessionId, persona, participants, onBack }) {
     const [loadingChatHistory, setLoadingChatHistory] = useState(true);
     // Ref to scroll to the end of the chat messages.
     const chatEndRef = useRef(null);
+    // State to control the visibility of the server high load modal
+    const [showHighLoadModal, setShowHighLoadModal] = useState(false);
+
 
     // Determines the other participant's name (the user's persona in the chat).
     const otherParticipant = participants.find(p => p !== persona);
@@ -37,6 +40,31 @@ function Chat({ sessionId, persona, participants, onBack }) {
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    /**
+     * Closes the server high load modal.
+     */
+    const handleCloseHighLoadModal = () => {
+        setShowHighLoadModal(false);
+        // Optionally, reset messages or show a system message indicating closure
+        setMessages(prevMessages => prevMessages.filter(msg => msg.sender !== "System" || !msg.message.includes("server is experiencing high loads")));
+    };
+
+    /**
+     * Navigates to the donate page.
+     */
+    const handleDonateClick = () => {
+        window.open('https://bitwattr.pages.dev/donate', '_blank');
+    };
+
+    /**
+     * Sets an error message related to server load.
+     * @param {function} errorMessageSetter - Function to set the error message in the chat.
+     */
+    const setServerLoadErrorMessage = (errorMessageSetter) => {
+        errorMessageSetter("Our server is currently experiencing high loads. Please try again later.");
+        setShowHighLoadModal(true); // Show the server high load modal
+    };
 
     /**
      * Effect to fetch chat history when the component mounts or sessionId/persona changes.
@@ -59,11 +87,17 @@ function Chat({ sessionId, persona, participants, onBack }) {
                     setMessages(formattedMessages);
                 } else {
                     console.error('Failed to fetch chat history:', data.detail);
+                    // Handle specific error codes or a general high load message for chat history
+                    if (response.status === 429 || response.status === 503 || (response.status >= 500 && response.status < 600)) {
+                        setServerLoadErrorMessage((msg) => setMessages(prevMessages => [...prevMessages, { sender: "System", message: msg }]));
+                    } else {
+                        setMessages(prevMessages => [...prevMessages, { sender: "System", message: `Failed to load chat history: ${data.detail || 'Unknown error'}.` }]);
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching chat history:', error);
-                // Optionally set an error message to display to the user
-                setMessages(prevMessages => [...prevMessages, { sender: "System", message: "Failed to load chat history. Please try again." }]);
+                // Display network error message for fetching chat history, now as high load
+                setServerLoadErrorMessage((msg) => setMessages(prevMessages => [...prevMessages, { sender: "System", message: msg }]));
             } finally {
                 setLoadingChatHistory(false);
             }
@@ -108,25 +142,27 @@ function Chat({ sessionId, persona, participants, onBack }) {
                 ]);
             } else {
                 // Display error message if API call fails.
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    { sender: "System", message: `Error: ${data.detail || 'Failed to get response.'}` },
-                ]);
+                // Handle specific error codes or a general high load message for chat interaction
+                if (response.status === 429 || response.status === 503 || (response.status >= 500 && response.status < 600)) {
+                    setServerLoadErrorMessage((msg) => setMessages((prevMessages) => [...prevMessages, { sender: "System", message: msg }]));
+                } else {
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        { sender: "System", message: `Error: ${data.detail || 'Failed to get response.'}` },
+                    ]);
+                }
             }
         } catch (error) {
             console.error('Error sending message:', error);
-            // Display network error message.
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { sender: "System", message: "Network error or server unavailable." },
-            ]);
+            // Display network error message, now as high load
+            setServerLoadErrorMessage((msg) => setMessages(prevMessages => [...prevMessages, { sender: "System", message: msg }]));
         } finally {
             setLoadingResponse(false); // Hide typing indicator
         }
     };
 
     // Displays only the last 20 messages for performance and readability.
-    const messagesToDisplay = messages.slice(-20);
+    const messagesToDisplay = messages//.slice(-20);
 
     return (
         <div className="chat-container">
@@ -183,6 +219,71 @@ function Chat({ sessionId, persona, participants, onBack }) {
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
             </form>
+
+            {/* Server High Load Modal */}
+            <div className={`policy-modal-overlay ${showHighLoadModal ? 'visible' : ''}`} role="dialog" aria-modal="true" aria-labelledby="highLoadModalTitle">
+                <div className="policy-modal-content">
+                    <h2 id="highLoadModalTitle"><FontAwesomeIcon icon={faTimesCircle} style={{ color: 'var(--secondary-accent)' }} /> Service Unavailable</h2> {/* Used secondary-accent */}
+                    <p>Our servers are currently experiencing high loads. Please try again later.</p>
+                    <p>As a small project, we can't afford high power servers. We encourage users who require 24/7 access or prefer complete control over their data to run this project locally on their own machines by accessing our GitHub repository.</p>
+                    <button className="donate-button" onClick={handleDonateClick} aria-label="Donate to keep us online">Donate to keep us online</button>
+                    <p>You can always run this locally!</p>
+                    <p>See the source code and local setup instructions on github:</p>
+                    <a
+                        href="https://github.com/your-repo-link" // TODO: Replace with your actual GitHub repo link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="visit-github-button"
+                        style={{
+                            background: 'var(--primary-accent)', /* Use primary accent color */
+                            color: 'var(--text-primary)',
+                            padding: '10px 20px',
+                            borderRadius: '5px',
+                            textDecoration: 'none',
+                            fontWeight: 'bold',
+                            display: 'inline-block',
+                            marginTop: '10px',
+                            transition: 'transform 0.2s ease-in-out, background-color 0.3s ease, color 0.3s ease',
+                            boxShadow: 'var(--box-shadow-medium)'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        aria-label="Visit GitHub repository for local setup"
+                    >
+                        Visit Git Repo
+                    </a>
+                    {/* Added More About BitWattr Section to Server High Load Modal */}
+                    <div className="more-about-bitwattr-container" style={{ marginTop: '20px' }}>
+                        <h3>More about the BitWattr Organization</h3>
+                        <a
+                            href="https://bitwattr.pages.dev/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="visit-bitwattr-button"
+                            style={{
+                                background: 'linear-gradient(45deg, var(--secondary-accent), var(--primary-accent))', /* Mix of primary and secondary */
+                                color: 'var(--text-primary)',
+                                padding: '10px 20px',
+                                borderRadius: '5px',
+                                textDecoration: 'none',
+                                fontWeight: 'bold',
+                                display: 'inline-block',
+                                marginTop: '10px',
+                                transition: 'transform 0.2s ease-in-out, background 0.3s ease, color 0.3s ease',
+                                boxShadow: 'var(--box-shadow-medium)'
+                            }}
+                            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                            aria-label="Visit BitWattr Organization website"
+                        >
+                            Visit BitWattr Organization
+                        </a>
+                    </div>
+                    <button onClick={handleCloseHighLoadModal} className="agree-button" style={{ marginTop: '20px' }} aria-label="Close server high load message">
+                        Close
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }

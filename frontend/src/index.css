@@ -5,10 +5,59 @@
  * It is designed for responsiveness across various screen sizes.
  */
 
+/* CSS Variables for Colors - Light Mode Defaults */
+:root {
+    --bg-primary: #f0f2f5; /* Body background */
+    --bg-secondary: #ffffff; /* Card/container background */
+    --text-primary: #1a1a1a;
+    --text-secondary: #555;
+    --primary-accent: #42a5f5; /* Header, main buttons */
+    --secondary-accent: #20B2AA; /* Light Sea Blue */
+    --border-color: #e0e0e0;
+    --message-sent-bg: #dcf8c6; /* Light green for sent messages */
+    --message-received-bg: #ffffff;
+    --modal-bg: #ffffff;
+    --button-hover-darken-factor: 0.8; /* Adjust for hover effect */
+    --link-color: #2196F3;
+    --link-hover-color: #1976d2;
+    --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --box-shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #282c44;
+    --text-primary: #f0f2f5;
+    --text-secondary: #a0a3b2;
+    --primary-accent: #66aaff;
+    --secondary-accent: #20B2AA; /* Keep light sea blue */
+    --border-color: #3d405b;
+    --message-sent-bg: #4a7c59;
+    --message-received-bg: #3b3e5b;
+    --modal-bg: #282c44;
+    --button-hover-darken-factor: 1.2; /* Adjust for hover effect in dark mode (lighten) */
+    --link-color: #90caf9;
+    --link-hover-color: #bbdefb;
+    --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --box-shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    /* Ensure link visibility in dark mode, especially on mobile */
+    .link-button,
+    .privacy-policy-link-container a, /* Targets "What is Chat History File?", "Privacy Policy", "Terms and condition" links */
+    .policy-modal-content a /* Targets "Cloudflare Privacy Policy" | "Cloudflare Terms of Service" links within the modal */
+     {
+        color: #FFFFFF !important; /* Force white color for maximum visibility in dark mode */
+    }
+
+
+}
+
 /* Global body styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
     display: flex;
@@ -16,24 +65,26 @@ body {
     align-items: flex-start; /* Align to top */
     min-height: 100vh;
     box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Main application container */
 .app-container {
-    background-color: #ffffff;
+    background-color: var(--bg-secondary);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-light);
     padding: 0;
     width: 100%;
     max-width: 950px; /* Increased max-width for desktop view */
     text-align: center;
     overflow: hidden; /* Ensures rounded corners are respected */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Header Styles */
 .app-header {
-    background-color: #42a5f5; /* A pleasant blue */
-    color: white;
+    background-color: var(--primary-accent);
+    color: var(--text-primary); /* Assuming header text is primary text color */
     padding: 15px 20px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -41,7 +92,8 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-medium);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .nav-container {
@@ -53,7 +105,7 @@ body {
 }
 
 .bitwattr-link {
-    color: #e3f2fd; /* Lighter blue for link */
+    color: var(--text-primary); /* Default to primary text color (black in light mode) */
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1em;
@@ -62,7 +114,7 @@ body {
 }
 
 .bitwattr-link:hover {
-    color: #ffffff;
+    color: var(--link-hover-color);
 }
 
 .app-title {
@@ -73,28 +125,57 @@ body {
     gap: 10px; /* Space between icon and text */
 }
 
-.whatsapp-icon {
+.chat-icon { /* Renamed from whatsapp-icon */
     font-size: 1.2em; /* Adjust size relative to text */
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--secondary-accent); /* Light Sea Blue */
+    color: var(--text-primary);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: color-mix(in srgb, var(--secondary-accent) var(--button-hover-darken-factor), black);
+}
+
 /* General Layout Adjustments */
+h1, h2, h3 {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
 h1 {
-    color: #1a1a1a;
     margin-bottom: 30px;
 }
 
 h2 {
-    color: #333;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-.upload-form-container, .persona-selection {
-    margin: 20px;
+.upload-form-container, .persona-selection,
+.run-locally-container, .more-about-bitwattr-container, .how-it-works-container,
+.demo-chat-container, .info-and-links-section, .run-locally-section, .bitwattr-info-section, .how-it-works-section {
+
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* File Upload Customization */
@@ -102,12 +183,12 @@ h2 {
     display: inline-block;
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #90caf9; /* Lighter blue for file selection */
-    color: #333; /* Darker text for contrast */
+    background-color: var(--primary-accent); /* Primary accent for file selection */
+    color: var(--text-primary); /* Darker text for contrast */
     border-radius: 5px;
     margin-bottom: 15px;
     transition: background-color 0.3s ease;
-    border: 1px solid #64b5f6; /* Border for subtle definition */
+    border: 1px solid var(--primary-accent); /* Border for subtle definition */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -115,7 +196,7 @@ h2 {
 }
 
 .custom-file-upload:hover {
-    background-color: #64b5f6;
+    background-color: color-mix(in srgb, var(--primary-accent) var(--button-hover-darken-factor), black);
 }
 
 .custom-file-upload input[type="file"] {
@@ -124,27 +205,28 @@ h2 {
 
 /* Common button styles */
 button {
-    background-color: #2196F3; /* Primary blue for general buttons */
-    color: white;
+    background-color: var(--primary-accent); /* Primary blue for general buttons */
+    color: var(--text-primary);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     display: inline-flex; /* Allow icon and text alignment */
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--primary-accent);
     gap: 8px; /* Space between text and icon */
 }
 
 button:hover:enabled {
-    background-color: #1976d2; /* Darker blue on hover */
+    background-color: color-mix(in srgb, var(--primary-accent) var(--button-hover-darken-factor), black);
 }
 
 button:disabled {
-    background-color: #cccccc;
+    background-color: var(--border-color);
     cursor: not-allowed;
     opacity: 0.7;
 }
@@ -152,7 +234,7 @@ button:disabled {
 .message {
     margin-top: 15px;
     font-size: 14px;
-    color: #333;
+    color: var(--text-secondary);
 }
 
 .chat-interface {
@@ -161,17 +243,18 @@ button:disabled {
 }
 
 .persona-button {
-    background-color: #4CAF50; /* Green for persona selection */
+    background-color: var(--secondary-accent); /* Light Sea Blue for persona selection */
     margin: 10px;
 }
 
 .persona-button:hover:enabled {
-    background-color: #388E3C;
+    background-color: color-mix(in srgb, var(--secondary-accent) var(--button-hover-darken-factor), black);
 }
 
 .upload-again-button {
     background-color: #6c757d; /* Grey for "upload again" */
     margin-top: 20px;
+    color: white; /* Ensure text is white for this specific button */
 }
 
 .upload-again-button:hover:enabled {
@@ -185,26 +268,28 @@ button:disabled {
     min-height: 500px;
     max-height: 900px;
     margin: 20px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
-    background-color: #fdfdfd;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .chat-header {
-    background-color: #e9ecef;
+    background-color: var(--bg-primary);
     padding: 15px;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .chat-header h2 {
     margin: 0;
     font-size: 1.1em;
-    color: #333;
+    color: var(--text-primary);
     flex-grow: 1;
     text-align: center;
     order: 2; /* Change order for mobile, so button comes first */
@@ -213,7 +298,7 @@ button:disabled {
 
 .back-button {
     background-color: #ffc107; /* Amber for back button */
-    color: #333;
+    color: var(--text-primary);
     padding: 8px 15px;
     font-size: 14px;
     order: 1; /* Make back button first on mobile */
@@ -221,7 +306,7 @@ button:disabled {
 }
 
 .back-button:hover:enabled {
-    background-color: #e0a800;
+    background-color: color-mix(in srgb, #ffc107 var(--button-hover-darken-factor), black);
 }
 
 .chat-messages {
@@ -231,7 +316,8 @@ button:disabled {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: #fefefe;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.3s ease;
 }
 
 .message-bubble {
@@ -246,16 +332,16 @@ button:disabled {
 
 .message-bubble.sent {
     align-self: flex-end;
-    background-color: #dcf8c6; /* WhatsApp light green for sent messages */
-    color: #1a1a1a;
+    background-color: var(--message-sent-bg);
+    color: var(--text-primary);
     border-bottom-right-radius: 2px;
 }
 
 .message-bubble.received {
     align-self: flex-start;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    color: #1a1a1a;
+    background-color: var(--message-received-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     border-bottom-left-radius: 2px;
 }
 
@@ -268,7 +354,7 @@ button:disabled {
 
 .message-sender-icon {
     font-size: 1.1em;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 /* Typing Indicator Animation */
@@ -277,13 +363,13 @@ button:disabled {
     align-items: center;
     gap: 5px;
     font-style: italic;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .typing-dot {
     width: 8px;
     height: 8px;
-    background-color: #666;
+    background-color: var(--text-secondary);
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out;
 }
@@ -302,7 +388,7 @@ button:disabled {
 }
 
 .no-messages-hint {
-    color: #777;
+    color: var(--text-secondary);
     font-style: italic;
     margin-top: 20px;
 }
@@ -310,35 +396,40 @@ button:disabled {
 .message-input-form {
     display: flex;
     padding: 15px;
-    border-top: 1px solid #dee2e6;
-    background-color: #f5f5f5;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
     gap: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .message-input-form input {
     flex-grow: 1;
     padding: 10px 15px;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     font-size: 16px;
     outline: none;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .message-input-form button {
     padding: 10px 15px;
     border-radius: 20px;
-    background-color: #2196F3;
+    background-color: var(--primary-accent);
+    color: var(--text-primary);
 }
 
 .message-input-form button:hover:enabled {
-    background-color: #1976d2;
+    background-color: color-mix(in srgb, var(--primary-accent) var(--button-hover-darken-factor), black);
 }
 
 /* Loading Spinner for Upload */
 .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-top: 4px solid #2196F3;
+    border: 4px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+    border-top: 4px solid var(--primary-accent);
     border-radius: 50%;
     width: 24px;
     height: 24px;
@@ -356,7 +447,7 @@ button:disabled {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    color: #555;
+    color: var(--text-secondary);
     font-style: italic;
 }
 
@@ -383,10 +474,10 @@ button:disabled {
 }
 
 .policy-modal-content {
-    background-color: #ffffff;
+    background-color: var(--modal-bg);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--box-shadow-light);
     max-width: 500px;
     width: 90%;
     text-align: left; /* Align text to the left for better readability */
@@ -394,20 +485,22 @@ button:disabled {
     max-height: 80vh; /* Adjust this value as needed, e.g., 80% of viewport height */
     overflow-y: auto; /* Enable vertical scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS devices */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .policy-modal-content h2,
 .policy-modal-content h3 {
     text-align: center; /* Keep headings centered for visual appeal */
     margin-bottom: 20px;
-    color: #2196F3;
+    color: var(--primary-accent);
+    transition: color 0.3s ease;
 }
 
 .policy-modal-content p {
     text-align: justify; /* Justify paragraphs for a cleaner look */
     margin-bottom: 15px;
     line-height: 1.6;
-    color: #555;
+    color: var(--text-secondary);
 }
 
 .policy-modal-content ul {
@@ -430,7 +523,7 @@ button:disabled {
     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-medium);
 }
 
 /* Adjustments for mobile view of modal content */
@@ -447,14 +540,14 @@ button:disabled {
 }
 
 .agree-button {
-    background-color: #2196F3;
+    background-color: var(--primary-accent);
     margin-top: 20px;
     padding: 12px 25px;
     font-size: 1.1em;
 }
 
 .agree-button:hover {
-    background-color: #1976d2;
+    background-color: color-mix(in srgb, var(--primary-accent) var(--button-hover-darken-factor), black);
 }
 
 @keyframes fadeInScale {
@@ -553,26 +646,35 @@ button:disabled {
         padding: 20px;
         width: 95%;
     }
+
+    .theme-toggle {
+        position: static; /* Adjust position for mobile */
+        transform: none;
+        margin-top: 10px; /* Add some space */
+        width: fit-content;
+        align-self: flex-end; /* Align to end of flex container */
+    }
 }
 
 /* Donate Page Specific Styles */
 .donate-page-container {
     padding: 30px;
     text-align: center;
-    background-color: #f9f9f9;
+    background-color: var(--bg-secondary);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-light);
     margin: 20px auto;
     max-width: 800px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .donate-page-container h2 {
-    color: #2196F3;
+    color: var(--primary-accent);
     margin-bottom: 25px;
 }
 
 .donate-page-container p {
-    color: #555;
+    color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 15px;
 }
@@ -581,13 +683,14 @@ button:disabled {
     margin-top: 30px;
     margin-bottom: 40px;
     padding: 20px;
-    background-color: #e3f2fd;
+    background-color: color-mix(in srgb, var(--bg-primary) 80%, transparent); /* Lighter shade for showcase */
     border-radius: 8px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 }
 
 .game-showcase h3 {
-    color: #1976d2;
+    color: var(--primary-accent);
     margin-bottom: 20px;
 }
 
@@ -605,27 +708,90 @@ button:disabled {
 
 .embed-caption {
     font-size: 0.9em;
-    color: #777;
+    color: var(--text-secondary);
     margin-top: 10px;
 }
 
 .other-games-section {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px dashed #cccccc;
-}
-
-.colorful-button {
-    /* Styles are inline in DonatePage.js for direct control, but can be moved here if needed for global styling */
+    border-top: 1px dashed var(--border-color);
 }
 
 .back-to-upload-button {
     background-color: #6c757d;
     margin-top: 20px;
+    color: white; /* Ensure text is white for this specific button */
 }
 
 .back-to-upload-button:hover:enabled {
     background-color: #5a6268;
+}
+
+/* PersonaChatLayout (Desktop only) */
+.persona-chat-layout {
+    display: flex;
+    height: 80vh;
+    min-height: 500px;
+    max-height: 900px;
+    margin: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    overflow: hidden;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.persona-sidebar {
+    width: 260px;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-color);
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.persona-sidebar h2 {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: var(--primary-accent);
+    text-align: left;
+}
+
+.persona-button.selected {
+    background-color: var(--primary-accent);
+    color: var(--text-primary);
+}
+
+.persona-chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--bg-secondary);
+    transition: background-color 0.3s ease;
+}
+
+.no-persona-selected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+/* Hide sidebar layout on mobile */
+@media (max-width: 600px) {
+    .persona-chat-layout,
+    .persona-sidebar,
+    .persona-chat-main {
+        display: none !important;
+    }
 }
 
 /* Responsive adjustments for DonatePage */
@@ -647,3 +813,98 @@ button:disabled {
     }
 }
 
+/* New/Modified styles for desktop horizontal experience */
+@media (min-width: 768px) { /* Apply these styles for tablets and desktops */
+    .upload-form-wrapper { /* This will be the main container in UploadForm.js */
+        display: flex;
+        justify-content: space-around; /* Distribute space evenly */
+        gap: 20px; /* Space between sections */
+        margin: 20px;
+        flex-wrap: wrap; /* Allow wrapping on slightly smaller desktops */
+    }
+
+    .upload-form-section,
+    .demo-chat-section,
+    .info-and-links-section,
+    .run-locally-section,
+    .bitwattr-info-section,
+    .how-it-works-section {
+        flex: 1; /* Allow sections to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px; /* Space between rows when wrapping */
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .upload-form-container { /* Renamed from previous .upload-form-container to fit new structure */
+        border: none; /* Remove border as parent will have it */
+        padding: 0; /* Remove padding as parent will have it */
+        background-color: transparent; /* Remove background as parent will have it */
+        margin: 0; /* Remove margin as parent will control spacing */
+    }
+
+    .demo-chat-container { /* Renamed from previous .demo-chat-container to fit new structure */
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        margin: 0;
+    }
+
+    .privacy-policy-link-container {
+        display: flex;
+        flex-direction: column; /* Stack links vertically within their section */
+        align-items: flex-start; /* Align links to the left */
+        gap: 10px;
+    }
+
+    .run-locally-container,
+    .more-about-bitwattr-container,
+    .how-it-works-container {
+        padding: 20px; /* Add padding for these standalone sections */
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 20px;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .how-it-works-container ol {
+        padding-left: 25px;
+    }
+    .how-it-works-container li {
+        margin-bottom: 10px;
+    }
+
+    /* Adjust button styles for better horizontal flow if needed */
+    .demo-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .link-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--link-color);
+        transition: color 0.3s ease;
+    }
+
+    .link-button:hover {
+        color: var(--link-hover-color);
+    }
+
+    /* Ensure buttons for run locally and donate are on one line */
+    .run-locally-container button,
+    .run-locally-container a.visit-github-button,
+    .more-about-bitwattr-container a.visit-bitwattr-button {
+        display: inline-flex;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+}

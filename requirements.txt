@@ -1,5 +1,0 @@
-# project_dependencies.txt
-fastapi
-uvicorn
-ollama
-python-dotenv
